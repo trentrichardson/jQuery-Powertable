@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+
+		<title>jQuery Power Table</title>
+
+		<meta name="Description" content="" />
+		<meta name="Keywords" content="" />
+		
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="jquery-powertable.js"></script>
+
+		<style type="text/css">
+			/*
+			------------------------------
+				layout
+			------------------------------
+			*/
+			body,img,p,h1,h3,fieldset,form,pre,code,ul,li,table,tr,td,th{ margin:0; padding:0; border:0; }
+			body {
+				font: 12px/16px Arial, Helvetica, sans-serif;
+				border-top: solid 5px #A04334;
+				background-color: #FAF9F4;
+				text-align: center;
+			}
+			noscript{ color: #ff0000; font-weight: bold; }
+			h1{ font-family: Times, serif; color: #555; margin: 0 0 20px 0; letter-spacing: 2px; }
+			p{ line-height: 18px; margin: 10px 0; }
+			a{ color: #7B94B2; }
+			a:hover{ color: #5B7492; }
+			#wrapper{ text-align: left; margin: 40px auto; background-color: #ffffff; width: 800px; min-height: 200px; padding: 25px 25px 25px 25px; }
+			
+
+			/* basic table styles */
+			.tablewrapper{ width: 500px; height: 500px; overflow: auto; border: solid 2px #999; }
+
+			table{ width: 900px; font-size: 11px; }
+			table th, 
+			table td{ padding: 5px 5px 5px 10px; min-width: 80px;}
+			table th{ background-color: #f8f8f8; text-align: left; }
+			table tr.bg0 td{ background-color: #fff; }
+			table tr.bg1 td{ background-color: #f4f4f4; }
+			/* pt specific styles: ptfixed, ptdragover, ptdraghandle, ptshowhide */
+			table tr th.ptfixed{ background-color: #F1F8FA; border-bottom: solid 1px #aaa; opacity: 0.95; filter: alpha(95); }
+			table tr.bg0 td.ptfixed{ background-color: #eee; border-right: solid 1px #aaa;  opacity: 0.95; filter: alpha(95); }
+			table tr.bg1 td.ptfixed{ background-color: #e4e4e4; border-right: solid 1px #aaa;  opacity: 0.95; filter: alpha(95); }
+			table .ptdragover{ border-left: dashed 2px #A04334; padding-left: 8px; }
+			table th .ptdraghandle{ text-decoration: none; font-weight: bold; font-size: 14px; padding: 0 4px; cursor: move; }
+			table th .ptshowhide{ text-decoration: none; font-weight: bold; font-size: 14px; padding: 0 4px; }
+
+			/* a separate ul controller */
+			ul{ float: right; padding: 0; width: 175px; }
+			ul li{ list-style: none; margin: 5px 0; padding: 5px 5px; color: #777; border-bottom: solid 2px #eee; }
+			ul li[data-ptcolumnvisible='true']{ color: #000; border-bottom: solid 2px #aaa; }
+			ul li.ptdragover{ border: dashed 2px #A04334; padding: 3px 3px 5px 3px; }
+			ul li .ptdraghandle{ text-decoration: none; font-weight: bold; padding: 0 4px; font-size: 14px; cursor: move; float: right;}
+			ul li .ptshowhide{ text-decoration: none; font-weight: bold; padding: 0 4px; font-size: 14px;  }
+		</style>
+		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				//sessionStorage.clear();
+				$pt = $('#listingsTable1').powertable({
+					controller: '#tableController',
+					//persistant: true
+					moveDisabled: [ 'condition'],
+					fixedColumns: ['description'],
+					fixedRows: [0]
+				});
+
+				//$pt.bind('beforeShowColumn', function(e){ e.preventDefault(); });
+				
+				//$pt.powertable('moveColumn', 1, 2);
+
+				//$pt.powertable('hideColumn', 1)
+				//	.powertable('hideColumn', 3)
+				//	.powertable('hideColumn', 5)
+				//	.powertable('showColumn', 'pcname');
+
+				//$pt.powertable('moveColumn', 'serialnum', 'description');
+				//console.log($pt.powertable('getOrder'));
+
+				$pt = $('#listingsTable2').powertable({
+					//allowMoving: false,
+					//allowShowHide: false,
+					fixedColumns: ['description'],
+					fixedRows: [0],
+					moveDisabled: ['description'],
+					showHideDisabled: ['description']
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<h1>Table Testing</h1>
+
+			<h2>Using list as controller</h2>
+
+			<ul id="tableController">
+				<li data-ptcolumn="description">Description</li>
+				<li data-ptcolumn="type">Type</li>
+				<li data-ptcolumn="purchased">Purchased</li>
+				<li data-ptcolumn="condition">Condition</li>
+				<li data-ptcolumn="modelnum">Model #</li>
+				<li data-ptcolumn="serialnum">Serial #</li>
+				<li data-ptcolumn="assignedto">Assigned To</li>
+				<li data-ptcolumn="lang">Lang</li>
+			</ul>
+
+			<div id="tablewrapper1" class="tablewrapper">
+			<table cellpadding="0" cellspacing="0" border="0" id="listingsTable1">
+				<thead>
+					<tr>
+						<th data-ptcolumn="description">Description</th>
+						<th data-ptcolumn="type">Type</th>
+						<th data-ptcolumn="purchased">Purchased</th>
+						<th data-ptcolumn="condition">Condition</th>
+						<th data-ptcolumn="modelnum">Model #</th>
+						<th data-ptcolumn="serialnum">Serial #</th>
+						<th data-ptcolumn="assignedto">Assigned To</th>
+						<th data-ptcolumn="lang">Language</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+				</tbody>
+			</table>
+			</div>
+
+			<h2>Using just the table</h2>
+
+			<div id="tablewrapper2" class="tablewrapper">
+			<table cellpadding="0" cellspacing="0" border="0" id="listingsTable2">
+				<thead>
+					<tr>
+						<th data-ptcolumn="description">Description</th>
+						<th data-ptcolumn="type">Type</th>
+						<th data-ptcolumn="purchased">Purchased</th>
+						<th data-ptcolumn="condition">Condition</th>
+						<th data-ptcolumn="modelnum">Model #</th>
+						<th data-ptcolumn="serialnum">Serial #</th>
+						<th data-ptcolumn="assignedto">Assigned To</th>
+						<th data-ptcolumn="lang">Language</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Premium</td>
+						<td>2012-01-12</td>
+						<td>Good</td>
+						<td>A2000</td>
+						<td>789-456-123-456</td>
+						<td>John Doe</td>
+						<td>En</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2011-10-20</td>
+						<td>Excellent</td>
+						<td>t52</td>
+						<td>9240-6206</td>
+						<td>Ted Lashinski</td>
+						<td>ES</td>
+					</tr>
+				
+					<tr class="bg1">
+						<td><a href="#" title="View">Acme Wigit</a></td>
+						<td>Delux</td>
+						<td>2012-02-04</td>
+						<td>Poor</td>
+						<td>A1500</td>
+						<td>789-456-147-456</td>
+						<td>Paul Ramrod</td>
+						<td>CZ</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">WH</a></td>
+						<td>Premium</td>
+						<td>2010-10-20</td>
+						<td>Fair</td>
+						<td>P5200</td>
+						<td>9240-6221</td>
+						<td>Jane Doe</td>
+						<td>FR</td>
+					</tr>
+
+					<tr class="bg1">
+						<td><a href="#" title="View">HW</a></td>
+						<td>Full</td>
+						<td>2012-02-10</td>
+						<td>Excellent</td>
+						<td>P32</td>
+						<td>789-457-456</td>
+						<td>Chris Johnson</td>
+						<td>EN-GB</td>
+					</tr>
+				
+					<tr class="bg0" id="hw_103">
+						<td><a href="#" title="View">TI</a></td>
+						<td>Full</td>
+						<td>2009-10-20</td>
+						<td>Fair</td>
+						<td>P5100</td>
+						<td>9432-6221</td>
+						<td>Fred Franklin</td>
+						<td>DE</td>
+					</tr>
+
+				</tbody>
+			<table>
+			</div>
+
+		</div>
+	</body>
+</html>
