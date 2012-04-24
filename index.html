@@ -25,12 +25,15 @@
 				text-align: center;
 			}
 			noscript{ color: #ff0000; font-weight: bold; }
-			h1{ font-family: Times, serif; color: #555; margin: 0 0 20px 0; letter-spacing: 2px; }
+			h1{ font-family: Times, serif; color: #555; margin: 0 0 20px -50px; letter-spacing: 2px; }
+			h2{ font-family: Times, serif; color: #777; margin: 0 0 20px -50px; letter-spacing: 2px; }
 			p{ line-height: 18px; margin: 10px 0; }
 			a{ color: #7B94B2; }
 			a:hover{ color: #5B7492; }
-			#wrapper{ text-align: left; margin: 40px auto; background-color: #ffffff; width: 800px; min-height: 200px; padding: 25px 25px 25px 25px; }
-			
+			#wrapper{ text-align: left; margin: 40px auto; background-color: #ffffff; width: 800px; min-height: 200px; padding: 25px 25px 25px 75px; }
+			#nav{ margin: 0 0 20px 20px; }
+			pre{ margin: 10px 0; padding: 10px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;}
+			pre.code{background-color: #333; color: #fff; overflow: auto;}
 
 			/* basic table styles */
 			.tablewrapper{ width: 500px; height: 500px; overflow: auto; border: solid 2px #999; }
@@ -50,44 +53,18 @@
 			table th .ptshowhide{ text-decoration: none; font-weight: bold; font-size: 14px; padding: 0 4px; }
 
 			/* a separate ul controller */
-			ul{ float: right; padding: 0; width: 175px; }
-			ul li{ list-style: none; margin: 5px 0; padding: 5px 5px; color: #777; border-bottom: solid 2px #eee; }
-			ul li[data-ptcolumnvisible='true']{ color: #000; border-bottom: solid 2px #aaa; }
-			ul li.ptdragover{ border: dashed 2px #A04334; padding: 3px 3px 5px 3px; }
-			ul li .ptdraghandle{ text-decoration: none; font-weight: bold; padding: 0 4px; font-size: 14px; cursor: move; float: right;}
-			ul li .ptshowhide{ text-decoration: none; font-weight: bold; padding: 0 4px; font-size: 14px;  }
+			ul#tableController{ float: right; padding: 0; width: 175px; }
+			ul#tableController li{ list-style: none; margin: 5px 0; padding: 5px 5px; color: #777; border-bottom: solid 2px #eee; }
+			ul#tableController li[data-ptcolumnvisible='true']{ color: #000; border-bottom: solid 2px #aaa; }
+			ul#tableController li.ptdragover{ border: dashed 2px #A04334; padding: 3px 3px 5px 3px; }
+			ul#tableController li .ptdraghandle{ text-decoration: none; font-weight: bold; padding: 0 4px; font-size: 14px; cursor: move; float: right;}
+			ul#tableController li .ptshowhide{ text-decoration: none; font-weight: bold; padding: 0 4px; font-size: 14px;  }
 		</style>
 		
 		<script type="text/javascript">
 			$(document).ready(function(){
-				//sessionStorage.clear();
-				$pt = $('#listingsTable1').powertable({
-					controller: '#tableController',
-					//persistant: true
-					moveDisabled: [ 'condition'],
-					fixedColumns: ['description'],
-					fixedRows: [0]
-				});
-
-				//$pt.bind('beforeShowColumn', function(e){ e.preventDefault(); });
-				
-				//$pt.powertable('moveColumn', 1, 2);
-
-				//$pt.powertable('hideColumn', 1)
-				//	.powertable('hideColumn', 3)
-				//	.powertable('hideColumn', 5)
-				//	.powertable('showColumn', 'pcname');
-
-				//$pt.powertable('moveColumn', 'serialnum', 'description');
-				//console.log($pt.powertable('getOrder'));
-
-				$pt = $('#listingsTable2').powertable({
-					//allowMoving: false,
-					//allowShowHide: false,
-					fixedColumns: ['description'],
-					fixedRows: [0],
-					moveDisabled: ['description'],
-					showHideDisabled: ['description']
+				$('pre.example').each(function(){
+					eval($(this).text());
 				});
 			});
 		</script>
@@ -95,10 +72,21 @@
 
 	<body>
 		<div id="wrapper">
-			<h1>Table Testing</h1>
+			<h1>jQuery Powertable - Move, Hide, Show, Fix table columns</h1>
 
-			<h2>Using list as controller</h2>
+			<p>jQuery Powertable is a plugin to bring extra functionality to your html tables.  With this plugin comes the options to move columns with html5 drag and drop, show or hide columns, fixed/sticky columns and rows, and persistant settings between page loads.</p>
+			
+			<ul id="nav">
+				<li><a href="#Examples">Examples</a></li>
+				<li><a href="#CSS">CSS</a></li>
+				<li><a href="#Options">Options</a></li>
+				<li><a href="#Methods">Methods</a></li>
+				<li><a href="#License">License</a></li>
+			</ul>
+			<h2 id="Examples">Examples</h2>
 
+			<h3>Using List as a Controller</h3>
+			<p>This example demonstrates using and independent list to control the table. Moving the list items can move table columns, and clicking the &plusmn; shows/hides the columns.</p>
 			<ul id="tableController">
 				<li data-ptcolumn="description">Description</li>
 				<li data-ptcolumn="type">Type</li>
@@ -156,7 +144,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -222,7 +210,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -288,7 +276,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -354,7 +342,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -420,7 +408,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -486,7 +474,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -552,7 +540,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -618,7 +606,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -684,7 +672,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -750,7 +738,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -790,7 +778,16 @@
 			</table>
 			</div>
 
-			<h2>Using just the table</h2>
+<pre class="code example">$pt = $('#listingsTable1').powertable({
+	controller: '#tableController',
+	moveDisabled: ['condition'],
+	fixedColumns: ['description'],
+	fixedRows: [0]
+});</pre>
+			<p>To attach the list items of the controller you must provide a data-ptcolumn="descrition" attribute to each list item AND the corresponding table master row (usually the first row, unless specified)</p>
+
+			<h3>Using just the table</h3>
+			<p>This example uses just the table.  The first row
 
 			<div id="tablewrapper2" class="tablewrapper">
 			<table cellpadding="0" cellspacing="0" border="0" id="listingsTable2">
@@ -838,7 +835,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -904,7 +901,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -970,7 +967,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1036,7 +1033,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1102,7 +1099,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1168,7 +1165,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1234,7 +1231,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1300,7 +1297,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1366,7 +1363,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1432,7 +1429,7 @@
 						<td>A1500</td>
 						<td>789-456-147-456</td>
 						<td>Paul Ramrod</td>
-						<td>CZ</td>
+						<td>EN</td>
 					</tr>
 				
 					<tr class="bg0" id="hw_103">
@@ -1469,9 +1466,184 @@
 					</tr>
 
 				</tbody>
-			<table>
+			</table>
 			</div>
 
+			<p>In this example the table header is the controller since none was specified.  We also disabled moving and hiding the "description" column.  Remember the data-ptcolumn attribute defines the name of the column.</p>
+
+<pre class="code example">$pt = $('#listingsTable2').powertable({
+	fixedColumns: ['description'],
+	fixedRows: [0],
+	moveDisabled: ['description'],
+	showHideDisabled: ['description']
+});</pre>
+			
+			<h2 id="CSS">The CSS to Get to Know</h2>
+
+<pre class="code">/* pt specific styles: ptfixed, ptdragover, ptdraghandle, ptshowhide */
+table tr th.ptfixed{ /* a fixed table header cell */ }
+
+table tr td.ptfixed{ /* a fixed table cell */ }
+
+table .ptdragover{ /* when drag and dropping the class given to show potential position */ }
+
+table .ptdraghandle{ /* class given to the generated drag handle */ }
+
+table .ptshowhide{ /* class given to a generated show/hide link */ }</pre>
+
+			<h2 id="Options">The Options</h2>
+
+<pre class="code">
+// this is the controller element selector, for instance a ul, with each li has data-ptcolumn="columnDataptcolumn"
+// this element will control the table, if table columns are hidden, controller still has access
+// if not provided this will default to the master row
+controller: null,
+
+// row index of the table with data-ptcolumn matching that of data-ptcolumn attributes in controller
+masterRow: 0,
+
+// allow user ordering of column indecies
+allowMoving: true,
+
+// an array of column names to not allow ordering
+moveDisabled: [],
+
+// the selector to a drag handles.  The scope is from the controller children that are draggable
+// if no selector is supplied a handle will be created called .ptdraghandle
+moveHandle: '',
+
+// the text placed inside the link to move a column, only used when moveHandle=''
+moveHandleText: '&harr;',
+
+// where to inject the move handle (append or prepend) when moveHandle=''
+moveHandleWhere: 'append',
+
+// allow user show/hide of columns
+allowShowHide: true,
+
+// array of column names to not allow show/hide
+showHideDisabled: [],
+
+// this is the selector to choose the showhide button within controller to fire events
+// if no selector is supplied a handle will be created called .ptshowhide
+showHideHandle: '',
+
+// the text placed inside the link to show/hide, only used when showHideHandle=''
+showHideHandleText: '&plusmn;',
+
+// where to inject the show/hide handle (append or prepend) when showHideHandle=''
+showHideHandleWhere: 'append',
+
+// if we want persistant memory of this table after each page load
+persistant: false,
+
+// this is a string for the storage key.  It should be unique per table
+storageKey: null,
+
+// when persistant=true this method saves the order 
+// parameter is an array of objects per column: [ { name:'ptcolumnval' visible:true },... ]
+// save should be a function: function(columnOrder, inst){  }
+save: null,
+
+// when persistant=true this method restores the order.  This method should return similar object to 
+// columnOrder in save function: [ { name:'ptcolumnval' visible:true },... ]
+// restore should be a function: function(inst){  }
+restore: null,
+
+// this method can be called to clear any storage when a user calls $(..).powertable('clearStorage')
+clearStorage: null,
+
+// scrolling jquery parent element, when using fixed columns and rows they will be relative 
+// to this element's scroll event
+scrollingParent: null,
+
+// array of column names to be fixed
+fixedColumns: [],
+
+// array of row indecies to be fixed
+fixedRows: [],
+
+// events, "before" events can use e.preventDefault() to stop move/hide/show/etc..
+beforeShowColumn: function(e, index){},
+afterShowColumn: function(e, index){},
+beforeHideColumn: function(e, index){},
+afterHideColumn: function(e, index){},
+beforeMoveColumn: function(e, fromIndex, toIndex){},
+afterMoveColumn: function(e, fromIndex, toIndex){}
+</pre>
+
+			<p>All the events above may allso be attached using the bind method</p>
+
+			<h2 id="Methods">The Methods</h2>
+
+<pre class="code">
+// Initialize a powertable instance
+$el.powertable({});
+
+// Enable a powertable instance
+$el.powertable('enable');
+
+// Disable a powertable instance
+$el.powertable('disable');
+
+// Destroy a powertable instance
+$el.powertable('destroy');
+
+// Set an option (will not reset many base options)
+$el.powertable('option', 'key', 'value');
+
+// Save the column order.  If settings.save function is supplied it will be called 
+// otherwise we use window.sessionStorage
+$el.powertable('save', columnOrderObj);
+
+// Restore column order.  If settings.restore function is supplied it will be called 
+// otherwise we use window.sessionStorage
+$el.powertable('restore');
+
+// Clear the storage.  If settings.clearStorage function is supplied it will be called 
+// otherwise we use window.sessionStorage
+$el.powertable('clearStorage');
+
+// Rebuild the table to the given columnOrder specs.
+$el.powertable('rebuild', columnOrderObj);
+
+// Get the columnOrderObj. noCache (true/false) will force it to create the order and 
+// not use the last generated
+$el.powertable('getOrder'[, noCache]); 
+
+// Get the index of a column with the given description.  This refers to the column's
+// data-ptcolumn="" attribute.
+$el.powertable('getIndex', 'description');
+
+// Move a column from index to an index.  If moveController (true/false) is given the 
+// controller column will also be moved.  Useful when using an external controller.
+// Index options may be the numeric index or the column description.
+$el.powertable('moveColumn', fromIndex, toIndex, moveController);
+
+// Show a column.  The index option may be the numeric index or the column description.
+$el.powertable('showColumn', index);
+
+// Hide a column.  The index option may be the numeric index or the column description.
+$el.powertable('hideColumn', index);
+
+// Fix a column.  The index option may be the numeric index or the column description.
+$el.powertable('fixedColumn', index);
+
+// Release a fixed a column.  The index option may be the numeric index or the column description.
+$el.powertable('releaseColumn', index);
+
+// Fix a row.  The index option may be the numeric index or the column description.
+$el.powertable('fixedRow', index);
+
+// Release a fixed row.  The index option may be the numeric index or the column description.
+$el.powertable('releaseRow', index);
+</pre>
+
+
+			<h2 id="License">License</h2>
+			<p>You may use this project under MIT or GPL licenses.</p>
+			<p><a href="http://trentrichardson.com/Impromptu/GPL-LICENSE.txt" title="GPL License">GPL License</a></p>
+			<p><a href="http://trentrichardson.com/Impromptu/MIT-LICENSE.txt" title="MIT License">MIT License</a></p>
 		</div>
 	</body>
 </html>
