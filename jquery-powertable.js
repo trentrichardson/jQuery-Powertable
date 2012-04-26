@@ -6,7 +6,6 @@
  * Dual licensed under the MIT or GPL licenses.
  * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
  * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
- * 
  */
 ;(function($){
 

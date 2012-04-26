@@ -9,6 +9,7 @@
 		<meta name="Keywords" content="jquery, javascript, table, move, column, drag, drop, fixed" />
 		
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="resources/jquery-litelighter.js"></script>
 		<script type="text/javascript" src="jquery-powertable.js"></script>
 
 		<style type="text/css">
@@ -33,7 +34,7 @@
 			#wrapper{ text-align: left; margin: 40px auto; background-color: #ffffff; width: 800px; min-height: 200px; padding: 25px 25px 25px 75px; }
 			#nav{ margin: 0 0 20px 20px; }
 			pre{ margin: 10px 0; padding: 10px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;}
-			pre.code{background-color: #333; color: #fff; overflow: auto;}
+			pre.code{color: #fff; overflow: auto;}
 
 			/* basic table styles */
 			.tablewrapper{ width: 500px; height: 500px; overflow: auto; border: solid 2px #999; }
@@ -66,6 +67,8 @@
 				$('pre.example').each(function(){
 					eval($(this).text());
 				});
+
+				$('pre').litelighter({  });
 			});
 		</script>
 	</head>
@@ -75,7 +78,7 @@
 			<h1>jQuery Powertable - Move, Hide, Show, Fix table columns</h1>
 
 			<p>jQuery Powertable is a plugin to bring extra functionality to your html tables.  With this plugin comes the options to move columns with html5 drag and drop, show or hide columns, fixed/sticky columns and rows, and persistant settings between page loads.</p>
-			<p><a href="http://trentrichardson.com" title="Back to Blog">Back to Blog</a></p>
+			<p><a href="http://trentrichardson.com" title="Back to Blog">Back to Blog</a> | <a href="http://trentrichardson.com/2012/04/25/jquery-powertable-move-show-hide-fix-table-columns/" title="Back to Blog">Blog Post</a> | <a href="https://github.com/trentrichardson/jQuery-Powertable" title="Back to Blog">Fork on Github</a></p>
 			
 			<ul id="nav">
 				<li><a href="#Examples">Examples</a></li>
@@ -84,6 +87,19 @@
 				<li><a href="#Methods">Methods</a></li>
 				<li><a href="#License">License</a></li>
 			</ul>
+
+			<h2 id="Donation">Donation</h2>
+			<a href="http://carbounce.com" title="Car Bounce" style="float: right; display: inline-block;width:380px;padding: 10px;background-color: #fbfbfb;border: dotted 4px #e8e8e8;color: #9EC45F;font-size: 16px;text-decoration:none;letter-spacing:1px;"><img src="http://carbounce.com/img/logo_small.png" alt="Car Bounce" align="left" style="margin-right: 20px;"/>Try my new app to keep you informed of your car's financing status and value.</a>	
+			<p>Has this Powertable been helpful to you?</p>
+			<div class="donation">
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="hidden" name="hosted_button_id" value="C2QQHR7JQGD28">
+				<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+				</form>
+			</div>
+
 			<h2 id="Examples">Examples</h2>
 
 			<h3>Using List as a Controller</h3>
@@ -779,14 +795,27 @@
 			</table>
 			</div>
 
-<pre class="code example">$pt = $('#listingsTable1').powertable({
+<pre class="code example" data-lllanguage="js">$pt = $('#listingsTable1').powertable({
 	controller: '#tableController',
 	moveDisabled: ['condition'],
 	fixedColumns: ['description'],
 	fixedRows: [0]
 });</pre>
 			<p>To attach the list items of the controller you must provide a data-ptcolumn="descrition" attribute to each list item AND the corresponding table master row (usually the first row, unless specified)</p>
-
+<pre class="code" data-lllanguage="html">
+&lt;table&gt;
+	&lt;tr&gt;
+		&lt;th data-ptcolumn="description"&gt;Description&lt;/th&gt;
+		&lt;th data-ptcolumn="type"&gt;Type&lt;/th&gt;
+		&lt;th data-ptcolumn="purchased"&gt;Purchased&lt;/th&gt;
+		&lt;th data-ptcolumn="condition"&gt;Condition&lt;/th&gt;
+		&lt;th data-ptcolumn="modelnum"&gt;Model #&lt;/th&gt;
+		&lt;th data-ptcolumn="serialnum"&gt;Serial #&lt;/th&gt;
+		&lt;th data-ptcolumn="assignedto"&gt;Assigned To&lt;/th&gt;
+		&lt;th data-ptcolumn="lang"&gt;Language&lt;/th&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;
+</pre>
 			<h3>Using just the table</h3>
 			<p>This example uses just the table.  The first row
 
@@ -1472,7 +1501,7 @@
 
 			<p>In this example the table header is the controller since none was specified.  We also disabled moving and hiding the "description" column.  Remember the data-ptcolumn attribute defines the name of the column.</p>
 
-<pre class="code example">$pt = $('#listingsTable2').powertable({
+<pre class="code example" data-lllanguage="js">$pt = $('#listingsTable2').powertable({
 	fixedColumns: ['description'],
 	fixedRows: [0],
 	moveDisabled: ['description'],
@@ -1480,8 +1509,8 @@
 });</pre>
 			
 			<h2 id="CSS">The CSS to Get to Know</h2>
-
-<pre class="code">/* pt specific styles: ptfixed, ptdragover, ptdraghandle, ptshowhide */
+			<p>You don't have to do a thing with these styles, but I'm sure you'll want to for a beautiful the end product.</p>
+<pre class="code" data-lllanguage="css">/* pt specific styles: ptfixed, ptdragover, ptdraghandle, ptshowhide */
 table tr th.ptfixed{ /* a fixed table header cell */ }
 
 table tr td.ptfixed{ /* a fixed table cell */ }
@@ -1494,7 +1523,7 @@ table .ptshowhide{ /* class given to a generated show/hide link */ }</pre>
 
 			<h2 id="Options">The Options</h2>
 
-<pre class="code">
+<pre class="code" data-lllanguage="js">
 // this is the controller element selector, for instance a ul, with each li has data-ptcolumn="columnDataptcolumn"
 // this element will control the table, if table columns are hidden, controller still has access
 // if not provided this will default to the master row
@@ -1577,7 +1606,7 @@ afterMoveColumn: function(e, fromIndex, toIndex){}
 
 			<h2 id="Methods">The Methods</h2>
 
-<pre class="code">
+<pre class="code" data-lllanguage="js">
 // Initialize a powertable instance
 $el.powertable({});
 
