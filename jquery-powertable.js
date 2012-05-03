@@ -158,7 +158,8 @@
 				}
 
 				// enable moving functionality if its available
-				if(this.settings.allowMoving && 'draggable' in document.createElement('span')){
+				var div = document.createElement('div');
+				if(this.settings.allowMoving && (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) ){
 					var currDrag = null,
 						draggables = this.controllerChildren,
 						draggableHandles = null;
