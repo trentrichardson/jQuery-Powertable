@@ -211,7 +211,7 @@
 							}
 
 							$t.data({ptscrollx:x, ptscrolly:y });
-						}, 50);
+						}, 1200);
 					}
 				});
 				this.scrollingParent.bind('scrollstart.Powertable', function(e){ inst._scrollStart(); });
@@ -446,7 +446,7 @@
 					this.settings.fixedColumns.push(index);
 				index = this.getIndex(index);
 
-				this.table.find('tr :nth-child('+ index+1 +')').data('ptfixed',true).attr('data-ptfixed',true).addClass('ptfixed');
+				this.table.find('tr :nth-child('+ (index+1) +')').data('ptfixed',true).attr('data-ptfixed',true).addClass('ptfixed');
 				this.columnOrder = this.getOrder(true);
 			},
 
@@ -455,7 +455,7 @@
 				if($.inArray(index, this.settings.fixedColumns) < 0)
 					this.settings.fixedColumns.splice(index,1);
 
-				this.table.find('tr :nth-child('+ index+1 +')').data('ptfixed',false).attr('data-ptfixed',false).removeClass('ptfixed');
+				this.table.find('tr :nth-child('+ (index+1) +')').data('ptfixed',false).attr('data-ptfixed',false).removeClass('ptfixed');
 				this.columnOrder = this.getOrder(true);
 			},
 
