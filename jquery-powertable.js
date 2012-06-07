@@ -121,11 +121,11 @@
 
 				// bind all events
 				this.table.bind('beforeShowColumn.Powertable', this.settings.beforeShowColumn);
-				this.table.bind('afterShowColumn.Powertable', this.settings.beforeShowColumn);
-				this.table.bind('beforeHIdeColumn.Powertable', this.settings.beforeShowColumn);
-				this.table.bind('afterHideColumn.Powertable', this.settings.beforeShowColumn);
-				this.table.bind('beforeMoveColumn.Powertable', this.settings.beforeShowColumn);
-				this.table.bind('afterMoveColumn.Powertable', this.settings.beforeShowColumn);
+				this.table.bind('afterShowColumn.Powertable', this.settings.afterShowColumn);
+				this.table.bind('beforeHideColumn.Powertable', this.settings.beforeHideColumn);
+				this.table.bind('afterHideColumn.Powertable', this.settings.afterHideColumn);
+				this.table.bind('beforeMoveColumn.Powertable', this.settings.beforeMoveColumn);
+				this.table.bind('afterMoveColumn.Powertable', this.settings.afterMoveColumn);
 
 				// enable controller functionality
 				if(this.settings.allowShowHide){
