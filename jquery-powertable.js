@@ -2,7 +2,7 @@
  * jQuery Powertable
  * By: Trent Richardson [http://trentrichardson.com]
  * 
- * Copyright 2012 Trent Richardson
+ * Copyright 2013 Trent Richardson
  * Dual licensed under the MIT or GPL licenses.
  * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
  * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
@@ -12,93 +12,14 @@
 	//########################################################################
 	// create our base object
 	//########################################################################
-	function Powertable($this, options){
+	$.powertable = function($this, options){
 		
 		this.version = 0.1;
 
-		this._defaults = {
-			// this is the controller element selector, for instance a ul, with each li has data-ptcolumn="columnDataptcolumn"
-			// this element will control the table, if table columns are hidden, controller still has access
-			// if not provided this will default to the master row
-			controller: null,
-
-			// row index of the table with data-ptcolumn matching that of data-ptcolumn attributes in controller
-			masterRow: 0,
-
-			// allow user ordering of column indecies
-			allowMoving: true,
-
-			// an array of column names to not allow ordering
-			moveDisabled: [],
-
-			// the selector to a drag handles.  The scope is from the controller children that are draggable
-			// if no selector is supplied a handle will be created called .ptdraghandle
-			moveHandle: '',
-
-			// the text placed inside the link to move a column, only used when moveHandle=''
-			moveHandleText: '&harr;',
-
-			// where to inject the move handle (append or prepend) when moveHandle=''
-			moveHandleWhere: 'append',
-
-			// allow user show/hide of columns
-			allowShowHide: true,
-
-			// array of column names to not allow show/hide
-			showHideDisabled: [],
-
-			// this is the selector to choose the showhide button within controller to fire events
-			// if no selector is supplied a handle will be created called .ptshowhide
-			showHideHandle: '',
-
-			// the text placed inside the link to show/hide, only used when showHideHandle=''
-			showHideHandleText: '&plusmn;',
-
-			// where to inject the show/hide handle (append or prepend) when showHideHandle=''
-			showHideHandleWhere: 'append',
-
-			// if we want persistant memory of this table after each page load
-			persistant: false,
-
-			// this is a string for the storage key.  It should be unique per table
-			storageKey: null,
-
-			// when persistant=true this method saves the order 
-			// parameter is an array of objects per column: [ { name:'ptcolumnval' visible:true },... ]
-			// save should be a function: function(columnOrder, inst){  }
-			save: null,
-
-			// when persistant=true this method restores the order.  This method should return similar object to 
-			// columnOrder in save function: [ { name:'ptcolumnval' visible:true },... ]
-			// restore should be a function: function(inst){  }
-			restore: null,
-
-			// this method can be called to clear any storage when a user calls $(..).powertable('clearStorage')
-			clearStorage: null,
-
-			// scrolling jquery parent element, when using fixed columns and rows they will be relative 
-			// to this element's scroll event
-			scrollingParent: null,
-
-			// array of column names to be fixed
-			fixedColumns: [],
-
-			// array of row indecies to be fixed
-			fixedRows: [],
-
-			// events, "before" events can use e.preventDefault() to stop move/hide/show/etc..
-			beforeShowColumn: function(e, index){},
-			afterShowColumn: function(e, index){},
-			beforeHideColumn: function(e, index){},
-			afterHideColumn: function(e, index){},
-			beforeMoveColumn: function(e, fromIndex, toIndex){},
-			afterMoveColumn: function(e, fromIndex, toIndex){}
-		};
-
-		this.settings = $.extend({}, this._defaults, options);
+		this.settings = $.extend({}, $.powertable.defaults, options);
 
 		this.table = $this;
-		this.masterRow = this.table.find('tr:eq('+ this.settings.masterRow +')');
+		this.masterRow = $(this.table.find('tr').get(this.settings.masterRow));
 		this.controller = this.settings.controller? $(this.settings.controller) : this.masterRow;
 		this.controllerChildren = this.controller.children();
 		this.scrollingParent = this.settings.scrollingParent? $(this.settings.scrollingParent) : this.table.parent();
@@ -106,12 +27,103 @@
 		this.settings.storageKey = this.settings.storageKey? this.settings.storageKey : (window.location.href.split(/(\?|\#)/)[0].replace(/^[^a-zA-Z0-9]+$/, '') + '_'+ this.table.attr('id'));
 
 		this.enable();
-	}
+	};
+
+
+	//########################################################################
+	// static properties and methods
+	//########################################################################
+	$.powertable.defaults = {
+		// this is the controller element selector, for instance a ul, with each li has data-ptcolumn="columnDataptcolumn"
+		// this element will control the table, if table columns are hidden, controller still has access
+		// if not provided this will default to the master row
+		controller: null,
+
+		// row index of the table with data-ptcolumn matching that of data-ptcolumn attributes in controller
+		masterRow: 0,
+
+		// allow user ordering of column indecies
+		allowMoving: true,
+
+		// an array of column names to not allow ordering
+		moveDisabled: [],
+
+		// the selector to a drag handles.  The scope is from the controller children that are draggable
+		// if no selector is supplied a handle will be created called .ptdraghandle
+		moveHandle: '',
+
+		// the text placed inside the link to move a column, only used when moveHandle=''
+		moveHandleText: '&harr;',
+
+		// where to inject the move handle (append or prepend) when moveHandle=''
+		moveHandleWhere: 'append',
+
+		// allow user show/hide of columns
+		allowShowHide: true,
+
+		// array of column names to not allow show/hide
+		showHideDisabled: [],
+
+		// this is the selector to choose the showhide button within controller to fire events
+		// if no selector is supplied a handle will be created called .ptshowhide
+		showHideHandle: '',
+
+		// the text placed inside the link to show/hide, only used when showHideHandle=''
+		showHideHandleText: '&plusmn;',
+
+		// where to inject the show/hide handle (append or prepend) when showHideHandle=''
+		showHideHandleWhere: 'append',
+
+		// if we want persistant memory of this table after each page load
+		persistant: false,
+
+		// this is a string for the storage key.  It should be unique per table
+		storageKey: null,
+
+		// when persistant=true this method saves the order 
+		// parameter is an array of objects per column: [ { name:'ptcolumnval' visible:true },... ]
+		// save should be a function: function(columnOrder, inst){  }
+		save: null,
+
+		// when persistant=true this method restores the order.  This method should return similar object to 
+		// columnOrder in save function: [ { name:'ptcolumnval' visible:true },... ]
+		// restore should be a function: function(inst){  }
+		restore: null,
+
+		// this method can be called to clear any storage when a user calls $(..).powertable('clearStorage')
+		clearStorage: null,
+
+		// scrolling jquery parent element, when using fixed columns and rows they will be relative 
+		// to this element's scroll event
+		scrollingParent: null,
+
+		// array of column names to be fixed
+		fixedColumns: [],
+
+		// array of row indecies to be fixed
+		fixedRows: [],
+
+		// events, "before" events can use e.preventDefault() to stop move/hide/show/etc..
+		beforeShowColumn: function(e, index){},
+		afterShowColumn: function(e, index){},
+		beforeHideColumn: function(e, index){},
+		afterHideColumn: function(e, index){},
+		beforeMoveColumn: function(e, fromIndex, toIndex){},
+		afterMoveColumn: function(e, fromIndex, toIndex){}
+	};
+
+	$.powertable.setDefaults = function(options){
+		$.powertable.defaults = $.extend({}, $.powertable.defaults, options);
+	};
+
+	$.powertable.lookup = {
+		i: 0
+	};
 
 	//########################################################################
 	// extend our object
 	//########################################################################
-	$.extend(Powertable.prototype, {
+	$.extend($.powertable.prototype, {
 		
 		// enable the Power table, used by constructor, but also may be called as method
 		enable: function(){
@@ -120,12 +132,12 @@
 				this.columnOrder = this.getOrder(true);
 
 				// bind all events
-				this.table.bind('beforeShowColumn.Powertable', this.settings.beforeShowColumn);
-				this.table.bind('afterShowColumn.Powertable', this.settings.afterShowColumn);
-				this.table.bind('beforeHideColumn.Powertable', this.settings.beforeHideColumn);
-				this.table.bind('afterHideColumn.Powertable', this.settings.afterHideColumn);
-				this.table.bind('beforeMoveColumn.Powertable', this.settings.beforeMoveColumn);
-				this.table.bind('afterMoveColumn.Powertable', this.settings.afterMoveColumn);
+				this.table.on('powertable:beforeShowColumn', this.settings.beforeShowColumn);
+				this.table.on('powertable:afterShowColumn', this.settings.afterShowColumn);
+				this.table.on('powertable:beforeHideColumn', this.settings.beforeHideColumn);
+				this.table.on('powertable:afterHideColumn', this.settings.afterHideColumn);
+				this.table.on('powertable:beforeMoveColumn', this.settings.beforeMoveColumn);
+				this.table.on('powertable:afterMoveColumn', this.settings.afterMoveColumn);
 
 				// enable controller functionality
 				if(this.settings.allowShowHide){
@@ -140,7 +152,7 @@
 						hideLinks = hideCols[this.settings.showHideHandleWhere]('<a href="javascript:void(0)" class="ptshowhide">'+ this.settings.showHideHandleText +'</a>').children('a.ptshowhide');
 					else hideLinks = hideCols.find(this.settings.showHideHandle);
 
-					hideLinks.bind('click.Powertable', function(e){
+					hideLinks.on('click.powertable', function(e){
 						var $t = $(this),
 							$tParent = $t.parent('[data-ptcolumn]');
 							visible = $tParent.data('ptcolumnvisible');
@@ -176,12 +188,12 @@
 					else dragableHandles = draggables.find(this.settings.moveHandle);
 
 					draggableHandles.attr('draggable',true)
-						.bind('dragstart.Powertable', function(e){ currDrag = this; });
+						.on('dragstart.powertable', function(e){ currDrag = this; });
 					draggables
-						.bind('dragenter.Powertable', function(e){ $(this).addClass('ptdragover'); })
-						.bind('dragleave.Powertable', function(e){ $(this).removeClass('ptdragover'); })
-						.bind('dragover.Powertable', function(e){ if(e.preventDefault){e.preventDefault();} })
-						.bind('drop.Powertable', function(e){
+						.on('dragenter.powertable', function(e){ $(this).addClass('ptdragover'); })
+						.on('dragleave.powertable', function(e){ $(this).removeClass('ptdragover'); })
+						.on('dragover.powertable', function(e){ if(e.preventDefault){e.preventDefault();} })
+						.on('drop.powertable', function(e){
 								if(e.preventDefault){e.preventDefault();} 
 								var dragParent = $(currDrag).parent('[data-ptcolumn]')[0];
 
@@ -196,26 +208,26 @@
 
 				// handle fixed columns and rows/ create custom scrollstart/scrollend events
 				inst.scrollInterval = null;
-				this.scrollingParent.data({ ptscrollx:0, ptscrolly:0 }).bind('scroll.Powertable', function(e){
+				this.scrollingParent.data('ptscrollx',0).data('ptscrolly',0).on('scroll.powertable', function(e){
 					var $t = $(this);
 					if(!inst.scrollInterval){
-						$t.trigger('scrollstart.Powertable');
+						$t.trigger('powertable:scrollstart');
 						inst.scrollInterval = setInterval(function(){
-							var x = $t.scrollLeft(),
-								y = $t.scrollTop();
+							var x = $t[0].offsetLeft,//$t.scrollLeft(),
+								y = $t[0].offsetTop; //$t.scrollTop();
 
 							if( (x*1 == $t.data('ptscrollx')*1) && (y*1 == $t.data('ptscrolly')*1) ){
 								clearInterval(inst.scrollInterval);
 								inst.scrollInterval = null;
-								$t.trigger('scrollend.Powertable');
+								$t.trigger('powertable:scrollend');
 							}
 
-							$t.data({ptscrollx:x, ptscrolly:y });
-						}, 1200);
+							$t.data('ptscrollx',x).data('ptscrolly',y);
+						}, 1000);
 					}
 				});
-				this.scrollingParent.bind('scrollstart.Powertable', function(e){ inst._scrollStart(); });
-				this.scrollingParent.bind('scrollend.Powertable', function(e){ inst._scrollEnd(); });
+				this.scrollingParent.on('powertable:scrollstart', function(e){ inst._scrollStart(); });
+				this.scrollingParent.on('powertable:scrollend', function(e){ inst._scrollEnd(); });
 				
 				// set fixed columns and rows
 				for(var i=0,l=this.settings.fixedColumns.length; i<l; i++)
@@ -233,9 +245,9 @@
 
 		// used to disable, but not remove the Powertable
 		disable: function(){
-				this.table.undelegate('.Powertable');
-				this.controller.undelegate('.Powertable');
-				this.scrollingParent.unbind('.Powertable');
+				this.table.off('.powertable');
+				this.controller.off('.powertable');
+				this.scrollingParent.off('.powertable');
 				return this.table;
 			},
 
@@ -338,7 +350,7 @@
 					var $t = $(this);
 					columnOrder.push({ 
 							name: $t.data('ptcolumn'), 
-							visible: $t.is(':visible'),
+							visible: $t.css('display') !== 'none',
 							fixed: $t.is("[data-ptcolumnfixed='true']")
 						});
 				});
@@ -526,8 +538,8 @@
 		// internal method to handle scroll event end
 		_scrollEnd: function(){
 				var $t = this.scrollingParent,
-					x = $t.scrollLeft(),
-					y = $t.scrollTop(),
+					x = $t[0].scrollLeft,//$t.scrollLeft(),
+					y = $t[0].scrollTop,//$t.scrollTop(),
 					clen = this.settings.fixedColumns.length,
 					rlen = this.settings.fixedRows.length,
 					rows = this.table[0].getElementsByTagName('tr'),
@@ -577,31 +589,29 @@
 	//########################################################################
 	// extend jquery
 	//########################################################################
-	$.fn.extend({
+	$.fn.powertable = function(o) {
+		o = o || {};
+		var tmp_args = Array.prototype.slice.call(arguments);
 
-		powertable: function(o) {
-			o = o || {};
-			var tmp_args = Array.prototype.slice.call(arguments);
-
-			if (typeof(o) == 'string'){
-				if(o.substr(0,3) == 'get'){
-					var inst = $(this[0]).data('powertable');
-					return inst.getOrder();
-				}
-				else{
-					return this.each(function() {
-						var inst = $(this).data('powertable');
-						inst[o].apply(inst, tmp_args.slice(1));
-					});
-				}
+		if (typeof(o) == 'string'){
+			if(o.substr(0,3) == 'get'){
+				var inst = $.powertable.lookup[$(this[0]).data('powertable')];
+				return inst.getOrder();
 			}
 			else{
 				return this.each(function() {
-					var $t = $(this);
-					$t.data('powertable', new Powertable($t, o) );
+					var inst = $.powertable.lookup[$(this).data('powertable')];
+					inst[o].apply(inst, tmp_args.slice(1));
 				});
 			}
 		}
-	});
+		else{
+			return this.each(function() {
+				var $t = $(this);
+				$.powertable.lookup[++$.powertable.lookup.i] = new $.powertable($t, o);
+				$t.data('powertable', $.powertable.lookup.i );
+			});
+		}
+	};
 
-})(jQuery);
+})(window.jQuery || window.Zepto || window.$);
