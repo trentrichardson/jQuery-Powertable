@@ -309,13 +309,15 @@
 		rebuild: function(columnOrder){
 				var currName = null,
 					currVisible = null,
+					currFixed = null,
 					currEl = null;
 
 				for(var i=0,l=columnOrder.length; i<l; i++){
 					currName = columnOrder[i].name;
 					currVisible = columnOrder[i].visible;
-					currEl = this.masterRow.children("[data-ptcolumn='"+ currName +"']"),
-					currCtlEl = this.controller.children("[data-ptcolumn='"+ currName +"']").data('ptcolumnvisible',currVisible).attr('data-ptcolumnvisible',currVisible);
+					currEl = this.masterRow.children("[data-ptcolumn='"+ currName +"']"),					
+					currCtlEl = this.controller.children("[data-ptcolumn='"+ currName +"']").data('ptcolumnvisible',currVisible).attr('data-ptcolumnvisible',currVisible),
+					currFixed = currEl.is("[data-ptcolumnfixed='true']");
 
 					// check the location
 					if(i !== currEl.index())
