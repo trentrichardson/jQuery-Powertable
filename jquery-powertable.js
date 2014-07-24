@@ -374,7 +374,7 @@
 				toIndex = this.getIndex(toIndex);
 				moveController = (moveController == undefined)? true : moveController;
 
-				var beforee = new $.Event('beforeMoveColumn');
+				var beforee = new $.Event('powertable:beforeMoveColumn');
 				this.table.trigger(beforee, [fromIndex, toIndex]);
 				
 				if(!beforee.isDefaultPrevented()){
@@ -396,7 +396,7 @@
 						if(this.settings.persistant)
 							this.save(this.columnOrder);
 					}
-					this.table.trigger('afterMoveColumn', [fromIndex, toIndex]);
+					this.table.trigger('powertable:afterMoveColumn', [fromIndex, toIndex]);
 				}
 				
 				return this.table;
@@ -406,7 +406,7 @@
 		showColumn: function(index){
 				index = this.getIndex(index);
 
-				var beforee = new $.Event('beforeShowColumn');
+				var beforee = new $.Event('powertable:beforeShowColumn');
 				this.table.trigger(beforee, [index]);
 				
 				if(!beforee.isDefaultPrevented()){
@@ -422,7 +422,7 @@
 					if(this.settings.persistant)
 						this.save(this.columnOrder);
 
-					this.table.trigger('afterShowColumn', [index]);
+					this.table.trigger('powertable:afterShowColumn', [index]);
 				}
 
 				return this.table;
@@ -432,7 +432,7 @@
 		hideColumn: function(index){
 				index = this.getIndex(index);
 
-				var beforee = new $.Event('beforeHideColumn');
+				var beforee = new $.Event('powertable:beforeHideColumn');
 				this.table.trigger(beforee, [index]);
 				
 				if(!beforee.isDefaultPrevented()){
@@ -448,7 +448,7 @@
 					if(this.settings.persistant)
 						this.save(this.columnOrder);
 
-					this.table.trigger('afterHideColumn', [index]);
+					this.table.trigger('powertable:afterHideColumn', [index]);
 				}
 
 				return this.table;
