@@ -382,6 +382,11 @@
 						var rows = this.table[0].getElementsByTagName('tr'),
 							where = toIndex < this.controllerChildren.length-1? 'insertBefore':'appendChild';
 
+						// if its the first child (position 0) trying to move to position 1, increment
+						if (fromIndex === toIndex - 1 && where === 'insertBefore') {
+							toIndex++;
+						}
+
 						// move table columns in each row..					
 						for(var i=0,l=rows.length; i<l; i++)
 							rows[i][where](rows[i].children[fromIndex], rows[i].children[toIndex]);
